@@ -1,5 +1,8 @@
 <div class="border-wrap">
   <div class="widget-wrapper">
-    <p>jajaja</p>
+    <app-time-date-widget></app-time-date-widget>
+    <p>Latitude: [{{ coordinates.latitude }}]</p>
+    <p>Longitude: [{{ coordinates.longitude }}]</p>
+    <button (click)="redirectToGoogleMaps()">Show My Location</button>
   </div>
 </div>
