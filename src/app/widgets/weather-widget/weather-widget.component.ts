@@ -1,26 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GeoLocationService } from 'src/app/services/geo-location-service.service';
+import { OpenWeatherService } from 'src/app/services/open-weather.service';
+import { IAddress } from 'src/app/types/address.interface';
 
 @Component({
   selector: 'app-weather-widget',
   templateUrl: './weather-widget.component.html',
   styleUrls: ['./weather-widget.component.scss'],
 })
-export class WeatherWidgetComponent {
-  constructor(private geolocationService: GeoLocationService) {
-    this.getMyLocation();
-  }
-
+export class WeatherWidgetComponent implements OnInit {
   coordinates: GeolocationCoordinates;
+  address: IAddress;
+  weatherData: any;
+
+  constructor(
+    private geolocationService: GeoLocationService,
+    private openWeatherService: OpenWeatherService
+  ) {}
+
+  ngOnInit(): void {
+    this.getMyLocation();
+    // console.log(this.coordinates.latitude, ' ', this.coordinates.longitude);
+  }
 
   getMyLocation(): void {
     this.geolocationService
       .getGeolocation()
       .then((coordinates) => {
         this.coordinates = coordinates;
-        console.log(this.coordinates);
+        this.geolocationService.getAddress(coordinates).subscribe({
+          next: (address: IAddress) => {
+            this.address = address;
+            this.fetchWeather(address.city);
+          },
+          error: (error: any) => {
+            // Handle the error
+            console.error(error);
+          },
+        });
       })
       .catch((error) => console.error('Error getting geolocation:', error));
+  }
+
+  fetchWeather(cityName: string): void {
+    this.openWeatherService.getWeather(cityName).subscribe({
+      next: (data) => {
+        this.weatherData = data;
+      },
+      error: (error) => console.log(error.message),
+      complete: () => console.info('API call completed'),
+    });
   }
 
   redirectToGoogleMaps(): void {

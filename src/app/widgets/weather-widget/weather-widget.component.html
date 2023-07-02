@@ -1,8 +1,16 @@
 <div class="border-wrap">
   <div class="widget-wrapper">
     <app-time-date-widget></app-time-date-widget>
-    <p>Latitude: [{{ coordinates.latitude }}]</p>
-    <p>Longitude: [{{ coordinates.longitude }}]</p>
-    <button (click)="redirectToGoogleMaps()">Show My Location</button>
+    <ng-container *ngIf="coordinates">
+      <div *ngIf="weatherData">
+        <p>{{ weatherData.name }}</p>
+        <p>Temperature: {{ weatherData.main.temp }}°C</p>
+        <p>Humidity: {{ weatherData.main.humidity }}%</p>
+      </div>
+    </ng-container>
+    <i
+      (click)="redirectToGoogleMaps()"
+      class="bx bx-map-alt bx-flip-horizontal"
+    ></i>
   </div>
 </div>

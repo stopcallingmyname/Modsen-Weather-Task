@@ -1,19 +1,14 @@
-.error-container {
-  display: flex;
-  height: 50px;
-  justify-content: center;
-  align-items: center;
-  background-color: #ff5f6e;
-  color: #ededed;
+.border-wrap {
+  border-radius: 0.3rem;
+  padding: 3px;
+  margin: 0.625rem;
   position: relative;
+  cursor: pointer;
 }
 
-.error-close-btn {
-  position: absolute;
-  right: 1rem;
-  color: #ededed;
-  background-color: transparent;
-  border: 0;
-  font-size: x-large;
-  cursor: pointer;
+.alert-content {
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: -0.015rem;
+  color: rgba(235, 235, 245, 0.6);
 }
