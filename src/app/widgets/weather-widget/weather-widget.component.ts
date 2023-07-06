@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoLocationService } from 'src/app/services/geo-location-service.service';
 import { OpenWeatherService } from 'src/app/services/open-weather.service';
+import { StormglassWeatherService } from 'src/app/services/stormglass-weather.service';
 import { IAddress } from 'src/app/types/address.interface';
 
 @Component({
@@ -15,7 +16,8 @@ export class WeatherWidgetComponent implements OnInit {
 
   constructor(
     private geolocationService: GeoLocationService,
-    private openWeatherService: OpenWeatherService
+    private openWeatherService: OpenWeatherService,
+    private stormglassService: StormglassWeatherService
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +34,7 @@ export class WeatherWidgetComponent implements OnInit {
           next: (address: IAddress) => {
             this.address = address;
             this.fetchWeather(address.city);
+            this.fetchWeatherStormglass(coordinates);
           },
           error: (error: any) => {
             // Handle the error
@@ -50,6 +53,19 @@ export class WeatherWidgetComponent implements OnInit {
       error: (error) => console.log(error.message),
       complete: () => console.info('API call completed'),
     });
+  }
+
+  fetchWeatherStormglass(coordinates: GeolocationCoordinates): void {
+    this.stormglassService
+      .getWeather(coordinates.latitude, coordinates.longitude)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          // this.weatherData = data;
+        },
+        error: (error) => console.log(error.message),
+        complete: () => console.info('API call completed'),
+      });
   }
 
   redirectToGoogleMaps(): void {

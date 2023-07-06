@@ -5,6 +5,9 @@ import { AppComponent } from './app.component';
 import { GlobalErrorComponent } from './widgets/global-error/global-error.component';
 import { WeatherWidgetComponent } from './widgets/weather-widget/weather-widget.component';
 import { TimeDateWidgetComponent } from './widgets/time-date-widget/time-date-widget.component';
+import { NavbarComponent } from './widgets/navbar/navbar.component';
+import { CoreModule } from './modules/core/core.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -12,8 +15,14 @@ import { TimeDateWidgetComponent } from './widgets/time-date-widget/time-date-wi
     GlobalErrorComponent,
     WeatherWidgetComponent,
     TimeDateWidgetComponent,
+    NavbarComponent,
   ],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [
+    CoreModule.forRoot(),
+    SharedModule,
+    BrowserModule,
+    HttpClientModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

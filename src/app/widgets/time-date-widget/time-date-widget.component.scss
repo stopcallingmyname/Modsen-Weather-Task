@@ -3,14 +3,13 @@
   position: relative;
   border-radius: 1rem;
   transition: all 0.3s;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.137) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 
   &:hover {
-    background: linear-gradient(
-      160deg,
-      rgba(255, 255, 255, 0.137) 0%,
-      rgba(255, 255, 255, 0) 100%
-    );
-
     transform: skew(1deg, 2deg);
   }
 }
