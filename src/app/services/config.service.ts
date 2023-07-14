@@ -12,4 +12,20 @@ export class ConfigService {
   get stormglassApiKey(): string {
     return environment.stormglassApiKey;
   }
+
+  get openCageApiKey(): string {
+    return environment.openCageApiKey;
+  }
+
+  get openWeatherUrl(): string {
+    return environment.openWeatherUrl;
+  }
+
+  get stormglassUrl(): string {
+    return environment.stormglassUrl;
+  }
+
+  get openCageUrl(): string {
+    return environment.openCageUrl;
+  }
 }

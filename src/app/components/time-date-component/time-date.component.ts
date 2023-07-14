@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-time-date-widget',
-  templateUrl: './time-date-widget.component.html',
-  styleUrls: ['./time-date-widget.component.scss'],
+  selector: 'app-time-date',
+  templateUrl: './time-date.component.html',
+  styleUrls: ['./time-date.component.scss'],
 })
 export class TimeDateWidgetComponent implements OnInit {
   currentTime: string;

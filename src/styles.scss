@@ -83,6 +83,8 @@ body {
   font-family: SF Pro Display;
   font-style: normal;
   background-image: url("https://www.wallpaperflare.com/static/521/19/792/road-mist-mountains-landscape-wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 i {
@@ -101,4 +103,11 @@ i {
   backdrop-filter: blur(9.7px);
   -webkit-backdrop-filter: blur(9.7px);
   border: 1px solid rgba(255, 255, 255, 0.19);
+}
+
+@media (max-width: 767px) {
+  body {
+    background-size: contain;
+    background-color: rgb(48, 48, 48);
+  }
 }
