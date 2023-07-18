@@ -1,0 +1,12 @@
+<app-auth></app-auth>
+<div class="events-list">
+  <h2>Upcoming Events</h2>
+  <ul>
+    <li *ngFor="let event of events">
+      <div>
+        <strong>{{ event.summary }}</strong>
+        <p>{{ event.start.dateTime | date : "short" }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

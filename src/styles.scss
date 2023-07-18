@@ -1,3 +1,38 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$Modsen-Weather-Task-primary: mat.define-palette(mat.$indigo-palette);
+$Modsen-Weather-Task-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$Modsen-Weather-Task-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$Modsen-Weather-Task-theme: mat.define-light-theme((
+  color: (
+    primary: $Modsen-Weather-Task-primary,
+    accent: $Modsen-Weather-Task-accent,
+    warn: $Modsen-Weather-Task-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($Modsen-Weather-Task-theme);
+
 // CSS Reset
 html,
 body,
@@ -111,3 +146,6 @@ i {
     background-color: rgb(48, 48, 48);
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

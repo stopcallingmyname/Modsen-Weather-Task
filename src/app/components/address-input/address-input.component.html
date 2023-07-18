@@ -1,7 +1,12 @@
-<input
-  #input
-  type="text"
-  [placeholder]="placeholder"
-  [value]="value"
-  (input)="valueChange.emit(input.value)"
-/>
+<section class="glass-container" style="padding: 0.3125rem 0.625rem">
+  <div class="input-wrapper">
+    <i class="bx bx-search"></i>
+    <input
+      #inputField
+      matInput
+      type="text"
+      [placeholder]="placeholder"
+      [value]="value"
+    />
+  </div>
+</section>

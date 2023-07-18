@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { catchError, pipe } from 'rxjs';
+import { catchError, pluck } from 'rxjs';
 import { ErrorService } from 'src/app/services/error.service';
 import { GeoLocationService } from 'src/app/services/geo-location-service.service';
 import { WeatherService } from 'src/app/services/weather.service';
 import { IAddress } from 'src/app/types/address.interface';
-import { IWeather } from './weather.interface';
+import { IWeather, IWeatherData } from './weather.interface';
 
 @Component({
   selector: 'app-weather',
@@ -13,10 +13,10 @@ import { IWeather } from './weather.interface';
   styleUrls: ['./weather.component.scss'],
 })
 export class WeatherComponent implements OnInit {
-  coordinates: GeolocationCoordinates;
   address: IAddress;
-  weatherData: IWeather;
+  todayWeatherData: IWeather;
   timeline: { time: any; temp: number; icon: string }[] = [];
+  weeklyTimeline: any = [];
   city: { lat: number; lon: number };
 
   constructor(
@@ -26,74 +26,114 @@ export class WeatherComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchData();
+    this.fetchGeolocation();
   }
 
-  fetchCityLocation(city: string): void {
-    this.geolocationService.getCityCoordinates(city).subscribe((data) => {
-      console.log('Forward geocoding: ', data);
-    });
-  }
+  ngAfterViewInit(): void {}
 
-  fetchTodayForecast(today: any): void {
-    for (const forecast of today.list.slice(0, 8)) {
-      this.timeline.push({
-        time: forecast.dt_txt,
-        temp: forecast.main.temp,
-        icon: forecast.weather[0].icon,
+  onInputValueChanged(): void {
+    this.geolocationService
+      .getCityCoordinates(this.address.city)
+      .subscribe((data) => {
+        this.fetchTodayWeather(data.lat, data.lng);
+        this.fetchCityNameByLocation(data.lat, data.lng);
+        this.fetchWeatherForecast(data.lat, data.lng);
       });
-
-      const apiDate = new Date(forecast.dt_txt).getTime();
-      if (this.isWithinDateRange(apiDate)) this.setWeatherData(forecast);
-    }
   }
 
-  fetchTodayWeather(coordinates: GeolocationCoordinates): void {
-    this.weatherService
-      .getWeather(coordinates.latitude, coordinates.longitude)
+  fetchGeolocation(): void {
+    this.geolocationService
+      .getGeolocation()
       .pipe(
         catchError((error: HttpErrorResponse) => {
           return this.errorService.errorHandler(error);
         })
       )
-      .subscribe((data: any) => {
-        const { humidity, gust, windSpeed, visibility } = data;
-        this.weatherData = {
-          ...this.weatherData,
-          humidity: humidity,
-          gust: gust,
-          wind_speed: windSpeed,
-          visibility: visibility,
-        };
+      .subscribe((coordinates) => {
+        this.fetchTodayWeather(coordinates.latitude, coordinates.longitude);
+        this.fetchWeatherForecast(coordinates.latitude, coordinates.longitude);
+        this.fetchCityNameByLocation(
+          coordinates.latitude,
+          coordinates.longitude
+        );
       });
   }
 
-  fetchData(): void {
-    this.geolocationService.getGeolocation().subscribe((coordinates) => {
-      console.log(coordinates);
-      this.coordinates = coordinates;
-      this.weatherService
-        .getWeatherForecast(coordinates.latitude, coordinates.longitude)
-        .subscribe((data) => {
-          this.fetchTodayForecast(data);
-        });
-      // this.weatherService
-      //   .getWeather(coordinates.latitude, coordinates.longitude)
-      //   .subscribe((data) => {
-      //     console.log('TODAY: ', data);
-      //   });
-      this.geolocationService.reverseGeocode(coordinates).subscribe({
-        next: (address: IAddress) => {
-          this.address = address;
-          this.fetchCityLocation(address.city);
-        },
-      }),
-        pipe(
-          catchError((error: HttpErrorResponse) => {
-            return this.errorService.errorHandler(error);
-          })
-        );
-    });
+  // fetchCityLocationByName(city: string): void {
+  //   this.geolocationService.getCityCoordinates(city).subscribe((data) => {
+  //   });
+  // }
+
+  fetchWeatherForecast(lat: number, lon: number): void {
+    this.weatherService
+      .getWeatherForecast(lat, lon)
+      .pipe(
+        pluck('list'),
+        catchError((error: HttpErrorResponse) => {
+          return this.errorService.errorHandler(error);
+        })
+      )
+      .subscribe((data) => {
+        this.fetchTodayForecast(data);
+        this.fetchWeeklyForecast(data);
+      });
+  }
+
+  fetchTodayForecast(today: any): void {
+    this.timeline = [];
+
+    for (const forecast of today.slice(0, 8)) {
+      this.timeline.push({
+        time: forecast.dt_txt,
+        temp: forecast.main.temp,
+        icon: forecast.weather[0].icon,
+      });
+    }
+
+    // for (const forecast of today.list.slice(0, 8)) {
+    //   this.timeline.push({
+    //     time: forecast.dt_txt,
+    //     temp: forecast.main.temp,
+    //     icon: forecast.weather[0].icon,
+    //   });
+    // }
+  }
+
+  fetchWeeklyForecast(data: any) {
+    this.weeklyTimeline = [];
+    for (let i = 0; i < data.length; i = i + 8) {
+      this.weeklyTimeline.push(data[i]);
+    }
+  }
+
+  fetchTodayWeather(lat: number, lon: number): void {
+    this.weatherService
+      .getCurrentWeather(lat, lon)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return this.errorService.errorHandler(error);
+        })
+      )
+      .subscribe((data: IWeatherData) => {
+        this.todayWeatherData = data.data[0];
+      });
+  }
+
+  getObjectKeys(obj: any): { key: string; value: any }[] {
+    return Object.keys(obj).map((key) => ({ key, value: obj[key] }));
+  }
+
+  fetchCityNameByLocation(lat: number, lon: number): void {
+    this.geolocationService
+      .reverseGeocode(lat, lon)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return this.errorService.errorHandler(error);
+        })
+      )
+      .subscribe((address: IAddress) => {
+        this.address = address;
+      });
   }
 
   // redirectToGoogleMaps(): void {
@@ -107,40 +147,4 @@ export class WeatherComponent implements OnInit {
   //       console.error('Failed to retrieve geolocation:', error)
   //     );
   // }
-
-  dateRange() {
-    const start = new Date();
-    start.setHours(start.getHours() + start.getTimezoneOffset() / 60);
-    const to = new Date(start);
-    to.setHours(to.getHours() + 2, to.getMinutes() + 59, to.getSeconds() + 59);
-
-    return { start, to };
-  }
-
-  isWithinDateRange(apiDate: number): boolean {
-    const startDate = this.dateRange().start.getTime();
-    const endDate = this.dateRange().to.getTime();
-    return startDate <= apiDate && endDate >= apiDate;
-  }
-
-  setWeatherData(forecast: any): void {
-    const { icon, main, description } = forecast.weather[0];
-    const { temp, feels_like } = forecast.main;
-
-    this.weatherData = {
-      icon: icon,
-      temperature: Number(temp),
-      feels_like: Number(feels_like),
-      weather: main,
-      description: description,
-      humidity: 0,
-      gust: 0,
-      wind_speed: 0,
-      visibility: 0,
-      astronomy: {
-        sunrise: '',
-        sunset: '',
-      },
-    };
-  }
 }

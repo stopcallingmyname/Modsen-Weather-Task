@@ -1,0 +1,17 @@
+<div *ngIf="todayWeatherData" class="weather-data-now">
+  <div class="temperature-data">
+    <img
+      src="assets/images/icons/{{ todayWeatherData.weather.icon }}.svg"
+      alt=""
+    />
+    <h1 style="font-size: -webkit-xxx-large; font-weight: 200">
+      {{ todayWeatherData.temp | number : "1.0-0" }}°C
+    </h1>
+  </div>
+  <div class="data-description">
+    <p>Feels like {{ todayWeatherData.app_temp | number : "1.0-0" }}°C.</p>
+    <p>{{ todayWeatherData.weather.description }}.</p>
+    <p>Sunrise: {{ todayWeatherData.sunrise }}.</p>
+    <p>Sunset: {{ todayWeatherData.sunset }}.</p>
+  </div>
+</div>

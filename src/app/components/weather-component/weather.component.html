@@ -1,80 +1,29 @@
 <div class="border-wrap">
   <div class="widget-wrapper">
-    <ng-container *ngIf="coordinates">
-      <ng-container *ngIf="weatherData">
-        <ng-container *ngIf="address">
-          <div class="widget-header">
-            <app-time-date></app-time-date>
-            <app-address-input></app-address-input>
-            <div class="address-data-container">
-              <h1>{{ this.address.city | uppercase }}</h1>
-              <h3>{{ this.address.country }}</h3>
-
-              <!-- <p>Temperature: {{ weatherData.main.temp }}°C</p>
-            <p>Humidity: {{ weatherData.main.humidity }}%</p> -->
-              <!-- <i
-              (click)="redirectToGoogleMaps()"
-              class="bx bx-map-alt bx-flip-horizontal"
-            ></i> -->
-            </div>
-          </div>
-        </ng-container>
-      </ng-container>
+    <ng-container *ngIf="address">
+      <div class="widget-header">
+        <app-time-date></app-time-date>
+        <app-address-input
+          [placeholder]="'Search for a city'"
+          [(value)]="address.city"
+          (valueChange)="onInputValueChanged()"
+        ></app-address-input>
+        <div class="address-data-container">
+          <h1>{{ this.address.city | uppercase }}</h1>
+          <h3>{{ this.address.country }}</h3>
+        </div>
+      </div>
     </ng-container>
 
-    <div *ngIf="weatherData" class="weather-data-container">
-      <div class="weather-data-now">
-        <div class="temperature-data">
-          <img src="assets/images/icons/{{ weatherData.icon }}.svg" alt="" />
-          <h1 style="font-size: -webkit-xxx-large; font-weight: 200">
-            {{ weatherData.temperature | number : "1.0-0" }}°C
-          </h1>
-        </div>
-        <div class="data-description">
-          <p>Feels like {{ weatherData.feels_like | number : "1.0-0" }}°C.</p>
-          <p>{{ weatherData.weather }}.</p>
-          <p>{{ weatherData.description }}</p>
-        </div>
-      </div>
-
-      <div class="timeline-data">
-        <div
-          *ngFor="let data of timeline"
-          style="text-align: center; text-shadow: 0 0 20px #ffffff82"
-        >
-          <div class="glass-container">{{ data.time | date : "HH:mm" }}</div>
-          <img src="assets/images/icons/{{ data.icon }}.svg" alt="" />
-          <div>{{ data.temp | number : "1.0-0" }}°C</div>
-        </div>
-      </div>
+    <div class="weather-data-container">
+      <app-today-weather
+        [todayWeatherData]="todayWeatherData"
+      ></app-today-weather>
+      <app-hourly-forecast [timeline]="timeline"></app-hourly-forecast>
+      <app-weekly-forecast
+        [weeklyTimeline]="weeklyTimeline"
+      ></app-weekly-forecast>
     </div>
-
-    <!-- <div class="wind-data">
-      <div class="glass-container" style="border-radius: 30px">
-        <i class="bx bx-wind" style="padding: 15px"></i>
-      </div>
-      <span style="font-size: small"> {{ weatherData.wind.speed }} km/h</span>
-      <span style="font-size: smaller; color: rgb(185, 185, 185)"> Wind </span>
-    </div>
-
-    <div class="visibility-data">
-      <div
-        class="glass-container"
-        style="
-          border-radius: 99999px;
-          padding: 15px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 7px;
-        "
-      >
-        <div class="glass-container" style="border-radius: 30px">
-          <i class="bx bx-low-vision" style="padding: 15px"></i>
-        </div>
-        <span style="font-size: small"> {{ weatherData.visibility }} </span>
-        <span style="font-size: x-small">km</span>
-      </div>
-    </div> -->
+    <a [routerLink]="['/events']">Events</a>
   </div>
 </div>

@@ -5,22 +5,29 @@ import { NavbarComponent } from 'src/app/components/navbar-component/navbar.comp
 import { TimeDateWidgetComponent } from 'src/app/components/time-date-component/time-date.component';
 import { WeatherComponent } from 'src/app/components/weather-component/weather.component';
 import { AddressInputComponent } from '../components/address-input/address-input.component';
+import { HourlyForecastComponent } from '../components/hourly-forecast/hourly-forecast.component';
+import { WeeklyForecastComponent } from '../components/weekly-forecast/weekly-forecast.component';
+import { TodayWeatherComponent } from '../components/today-weather/today-weather.component';
+import { EventsComponent } from '../components/events/events.component';
 
 @NgModule({
   imports: [CommonModule],
   exports: [
     CommonModule,
-    WeatherComponent,
     TimeDateWidgetComponent,
-
     AddressInputComponent,
+    TodayWeatherComponent,
+    HourlyForecastComponent,
+    WeeklyForecastComponent,
     NavbarComponent,
     GlobalErrorComponent,
   ],
   declarations: [
-    WeatherComponent,
     TimeDateWidgetComponent,
     AddressInputComponent,
+    TodayWeatherComponent,
+    HourlyForecastComponent,
+    WeeklyForecastComponent,
     NavbarComponent,
     GlobalErrorComponent,
   ],

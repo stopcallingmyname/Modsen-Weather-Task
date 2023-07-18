@@ -56,47 +56,6 @@
   justify-content: center;
 }
 
-.weather-data-container img {
-  width: 4.375rem;
-  height: 4.375rem;
-}
-
-.weather-data-now {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.temperature-data {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-direction: row;
-}
-
-.data-description {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.data-description p {
-  color: $secondary-text-color;
-  font-size: medium;
-}
-
-.timeline-data {
-  display: flex;
-  gap: 5px;
-  color: $secondary-text-color;
-}
-
-.timeline-data-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 h1,
 h3 {
   margin: 0px;

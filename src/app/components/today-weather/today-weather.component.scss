@@ -1,0 +1,43 @@
+@import "src/styles/variables";
+
+.weather-data-now {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.temperature-data {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-direction: row;
+}
+
+.data-description {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+img {
+  width: 4.375rem;
+  height: 4.375rem;
+}
+
+p {
+  color: $secondary-text-color;
+  font-size: medium;
+}
+
+h1,
+h3 {
+  margin: 0px;
+}
+
+h1 {
+  color: $text-color;
+}
+
+h3 {
+  color: $secondary-text-color;
+}

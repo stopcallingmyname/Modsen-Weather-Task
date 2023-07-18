@@ -1,0 +1,12 @@
+<div class="timeline-data">
+  <div
+    *ngFor="let data of timeline"
+    style="text-align: center; text-shadow: 0 0 20px #ffffff82"
+  >
+    <div class="glass-container" style="font-size: 0.7rem">
+      {{ data.time | date : "HH:mm" }}
+    </div>
+    <img src="assets/images/icons/{{ data.icon }}.svg" alt="" />
+    <div style="font-size: smaller">{{ data.temp | number : "1.0-0" }}°C</div>
+  </div>
+</div>

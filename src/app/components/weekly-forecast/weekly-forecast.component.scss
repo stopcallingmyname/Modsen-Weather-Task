@@ -1,0 +1,28 @@
+@import "src/styles/variables";
+
+.weekly-timeline {
+  display: flex;
+  gap: 1rem;
+}
+
+img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.date {
+  color: $secondary-text-color;
+  font-size: smaller;
+}
+
+.data {
+  color: $secondary-text-color;
+  font-size: smaller;
+}
+
+.separator {
+  height: 1px;
+  align-self: stretch;
+  background-color: $secondary-text-color;
+  border-radius: 5rem;
+}
